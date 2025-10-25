@@ -78,13 +78,38 @@ const allSongs = [
   },
 ];
 
+/*
+This code creates a new instance of the Audio object,
+which can be used to play audio files in the browser.
+*/
+
 const audio = new Audio();
+
+/*
+This code initializes the userData object with default values.
+It sets the songs property to a copy of allSongs array,
+the currentSong property to null,
+and the songCurrentTime property to 0.
+*/
 
 let userData = {
   songs: [...allSongs],
   currentSong: null,
   songCurrentTime: 0,
 };
+
+/**
+ * This code defines a function called playSong that takes an id parameter.
+ * It finds the song object in the userData.songs array that matches the given id,
+ * and sets the audio.src and audio.title properties to the song's source and title, respectively.
+ * If the userData.currentSong property is null or does not match the song's id,
+ * it sets the audio.currentTime property to 0.
+ * Otherwise, it sets the audio.currentTime property to the userData.songCurrentTime value.
+ * Finally, it sets the userData.currentSong property to the song object,
+ * and adds the "playing" class to the playButton element.
+ * @param {number} id - The id of the song to play.
+ * @returns {void} - This function does not return any value.
+ */
 
 const playSong = (id) => {
   const song = userData?.songs.find((song) => song.id === id);
@@ -100,11 +125,27 @@ const playSong = (id) => {
   audio.play();
 };
 
+/**
+ * This code defines a function called pauseSong that pauses the currently playing song.
+ * It also saves the current playback time of the song to the userData.songCurrentTime property,
+ * and removes the "playing" class from the playButton element.
+ * @returns {void} - This function does not return any value.
+ */
+
 const pauseSong = () => {
   userData.songCurrentTime = audio.currentTime;
   playButton.classList.remove("playing");
   audio.pause();
 };
+
+/**
+ * This code defines a function called playNextSong that plays the next song in the user's playlist.
+ * If there is no current song playing, it plays the first song in the playlist.
+ * Otherwise, it finds the index of the current song in the playlist,
+ * retrieves the next song using that index,
+ * and plays it by calling the playSong function with the next song's id.
+ * @returns {void} - This function does not return any value.
+ */
 
 const playNextSong = () => {
   if (userData?.currentSong === null) {
@@ -116,6 +157,14 @@ const playNextSong = () => {
   }
 };
 
+/**
+ * This code defines a function called playPreviousSong that plays the previous song in the user's playlist.
+ * If there is no current song playing, the function simply returns without doing anything.
+ * Otherwise, it finds the index of the current song in the playlist,
+ * retrieves the previous song using that index,
+ * and plays it by calling the playSong function with the previous song's id.
+ * @returns {void} - This function does not return any value.
+ */
 const playPreviousSong = () => {
   if (userData?.currentSong === null) return;
   else {
@@ -124,6 +173,14 @@ const playPreviousSong = () => {
     playSong(previousSong.id);
   }
 };
+/** 
+ * This code defines a function called renderSongs that takes an array of song objects as a parameter.
+It creates an HTML string that represents a list of playlist songs, 
+and adds it to the playlist-songs element in the HTML document.
+  * @param {array} array - An array of song objects to be rendered in the playlist.
+  * @returns {void} - This function does not return any value.
+*/
+
 const renderSongs = (array) => {
   const songsHTML = array
     .map((song) => {
@@ -146,6 +203,13 @@ const renderSongs = (array) => {
   playlistSongs.innerHTML = songsHTML;
 };
 
+/**
+ * This code defines a function called getCurrentSongIndex that returns the index of the current song in the user's playlist.
+ *  * @returns {number} The index of the current song in the user's playlist.
+ *  * @example
+ *  * const index = getCurrentSongIndex();
+ *  * console.log(index); // Outputs the index of the current song
+ */
 const getCurrentSongIndex = () =>
   userData?.songs.indexOf(userData?.currentSong);
 
@@ -159,6 +223,11 @@ playButton.addEventListener("click", () => {
 
 pauseButton.addEventListener("click", pauseSong);
 nextButton.addEventListener("click", playNextSong);
+
+/**
+ * This code defines a function called sortSongs that sorts the songs in the user's playlist alphabetically by title.
+ * @returns {array} - Returns the sorted array of songs.
+ */
 const sortSongs = () => {
   userData?.songs.sort((a, b) => {
     if (a.title < b.title) {
