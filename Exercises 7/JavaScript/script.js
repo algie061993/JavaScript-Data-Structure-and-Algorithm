@@ -107,6 +107,9 @@ let userData = {
  * Otherwise, it sets the audio.currentTime property to the userData.songCurrentTime value.
  * Finally, it sets the userData.currentSong property to the song object,
  * and adds the "playing" class to the playButton element.
+ * It also calls the highlightCurrentSong, setPlayerDisplay, and setPlayButtonAccessibleText functions,
+ * and starts playing the audio by calling the audio.play() method.
+ *
  * @param {number} id - The id of the song to play.
  * @returns {void} - This function does not return any value.
  */
@@ -177,6 +180,13 @@ const playPreviousSong = () => {
   }
 };
 
+/**
+ * This code defines a function called shuffle that shuffles the songs in the user's playlist randomly.
+ * It uses the sort method with a random comparison function to rearrange the songs in a random order.
+ * After shuffling, it resets the current song and playback time, updates the playlist display,
+ * pauses any currently playing song, and updates the player display and play button accessible text.
+ * @returns {void} - This function does not return any value.
+ */
 const shuffle = () => {
   userData?.songs.sort(() => Math.random() - 0.5);
   userData.currentSong = null;
@@ -188,6 +198,16 @@ const shuffle = () => {
   setPlayButtonAccessibleText();
 };
 
+/**
+ * This code defines a function called deleteSong that deletes a song from the user's playlist based on its id.
+ * If the song being deleted is currently playing, it stops the playback and resets the current song and playback time.
+ * After deleting the song, it updates the playlist display and highlights the current song if applicable.
+ * Finally, it sets the accessible text for the play button.
+ * 
+ * @param {number} id - The id of the song to delete.
+ * @returns {void} - This function does not return any value.
+ 
+ */
 const deleteSong = (id) => {
   if (userData?.currentSong?.id === id) {
     userData.currentSong = null;
@@ -201,6 +221,17 @@ const deleteSong = (id) => {
   setPlayButtonAccessibleText();
 };
 
+/**
+ * This code defines a function called setPlayerDisplay that updates the display of the currently playing song in the music player.
+ * It selects the HTML elements with the IDs "player-song-title" and "player-song-artist",
+ * and sets their text content to the title and artist of the current song stored in the userData object.
+ * If there is no current song, it sets the text content to an empty string.
+ * @returns {void} - This function does not return any value.
+ * @example
+ * setPlayerDisplay();
+ * // This will update the player display with the current song's title and artist.
+ */
+
 const setPlayerDisplay = () => {
   const playingSong = document.getElementById("player-song-title");
   const songArtist = document.getElementById("player-song-artist");
@@ -210,6 +241,17 @@ const setPlayerDisplay = () => {
   playingSong.textContent = currentTitle ? currentTitle : "";
   songArtist.textContent = currentArtist ? currentArtist : "";
 };
+
+/**
+ * This code defines a function called highlightCurrentSong that highlights the currently playing song in the playlist.
+ * It selects all elements with the class "playlist-song" and removes the "aria-current" attribute from each of them.
+ * Then, it finds the element corresponding to the current song using its id and sets the "aria-current" attribute to "true".
+ * This visually indicates which song is currently playing in the playlist.
+ * @returns {void} - This function does not return any value.
+ * @example
+ * highlightCurrentSong();
+ * // This will highlight the currently playing song in the playlist.
+ */
 
 const highlightCurrentSong = () => {
   const playlistSongElements = document.querySelectorAll(".playlist-song");
@@ -228,8 +270,17 @@ const highlightCurrentSong = () => {
  * This code defines a function called renderSongs that takes an array of song objects as a parameter.
 It creates an HTML string that represents a list of playlist songs, 
 and adds it to the playlist-songs element in the HTML document.
+The function also calls the highlightCurrentSong and setPlayButtonAccessibleText functions.
   * @param {array} array - An array of song objects to be rendered in the playlist.
   * @returns {void} - This function does not return any value.
+  * @example
+  * const songs = [
+  *   { id: 1, title: "Song 1", artist: "Artist 1", duration: "3:30" },
+  *   { id: 2, title: "Song 2", artist: "Artist 2", duration: "4:15" },
+  *   { id: 3, title: "Song 3", artist: "Artist 3", duration: "2:45" }
+  * ];
+  * renderSongs(songs);
+  * // This will render the songs in the playlist-songs element.
 */
 
 const renderSongs = (array) => {
