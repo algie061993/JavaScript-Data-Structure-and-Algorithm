@@ -1,0 +1,225 @@
+/* --- CSS RESET & VARIABLES --- */
+:root {
+  --bg-gradient: linear-gradient(135deg, #1e0533, #110e17);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent-color: #ff0055;
+  --accent-gradient: linear-gradient(45deg, #ff0055, #ff5e00);
+  --text-color: #ffffff;
+  --text-secondary: #b3b3b3;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Outfit", sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* --- DECORATIVE BACKGROUND BLOBS --- */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(100px);
+  opacity: 0.5;
+}
+body::before {
+  background: #ff0055;
+  top: 10%;
+  left: 20%;
+  animation: float 8s infinite alternate;
+}
+body::after {
+  background: #00d4ff;
+  bottom: 10%;
+  right: 20%;
+  animation: float 10s infinite alternate-reverse;
+}
+
+/* --- MAIN CONTAINER --- */
+main {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  padding: 3rem 2rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, #fff, #b3b3b3);
+  -webkit-background-clip: text;
+  background-clip: text; /* Added standard property for compatibility */
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* --- INPUT FIELDS --- */
+input[type="number"] {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid var(--glass-border);
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 1.2rem;
+  font-family: inherit;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  /* Remove spinner arrows */
+  -moz-appearance: textfield;
+  -webkit-appearance: none; /* Added vendor prefix for input arrow removal */
+  appearance: none; /* Added standard property for input arrow removal */
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+}
+
+/* --- BUTTON --- */
+button {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent-gradient);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(255, 0, 85, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* --- OUTPUT SECTION --- */
+section {
+  width: 90%;
+  max-width: 450px;
+}
+
+#output {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* FIX: Removed initial hiding properties so the box is visible by default */
+  transition: all 0.5s ease;
+}
+
+/* Add a placeholder message when the element is empty */
+#output:empty::before {
+  content: "Click 'Convert' or press Enter to see the result...";
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Class to add via JS when showing results */
+#output.visible {
+  /* These properties are kept to ensure the "pulse" animation still occurs */
+  opacity: 1;
+  transform: translateY(0);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#output.error {
+  border-color: #ff3333;
+  color: #ff3333;
+  font-size: 1.1rem;
+}
+
+#output.success {
+  border-color: #00ff88;
+  color: #00ff88;
+  font-family: "Times New Roman", serif; /* Classic look for the numeral */
+  font-size: 2.5rem;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes float {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 40px);
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  main {
+    padding: 2rem 1.5rem;
+  }
+}
