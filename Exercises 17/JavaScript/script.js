@@ -11,7 +11,7 @@ let isCheckpointCollisionDetectionActive = true;
 
 const proportionalSize = (size) => {
   return innerHeight < 500 ? Math.ceil((size / 500) * innerHeight) : size;
-};
+}
 
 class Player {
   constructor() {
@@ -30,7 +30,7 @@ class Player {
     ctx.fillStyle = "#99c9ff";
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
-
+  
   update() {
     this.draw();
     this.position.x += this.velocity.x;
@@ -56,7 +56,28 @@ class Player {
   }
 }
 
+class Platform {
+  constructor(x, y) {
+    this.position = {
+      x,
+      y,
+    };
+    this.width = 200;
+    this.height = proportionalSize(40);
+  }
+  draw() {
+    ctx.fillStyle = "#acd157";
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+  }
+}
+
 const player = new Player();
+
+
+const platformPositions = [
+
+];
+
 
 const animate = () => {
   requestAnimationFrame(animate);
@@ -65,23 +86,21 @@ const animate = () => {
 
   if (keys.rightKey.pressed && player.position.x < proportionalSize(400)) {
     player.velocity.x = 5;
-  } else if (
-    keys.leftKey.pressed &&
-    player.position.x > proportionalSize(100)
-  ) {
+  } else if (keys.leftKey.pressed && player.position.x > proportionalSize(100)) {
     player.velocity.x = -5;
   } else {
     player.velocity.x = 0;
   }
-};
+}
+
 
 const keys = {
   rightKey: {
-    pressed: false,
+    pressed: false
   },
   leftKey: {
-    pressed: false,
-  },
+    pressed: false
+  }
 };
 
 const movePlayer = (key, xVelocity, isPressed) => {
@@ -111,13 +130,13 @@ const movePlayer = (key, xVelocity, isPressed) => {
       }
       player.velocity.x += xVelocity;
   }
-};
+}
 
 const startGame = () => {
   canvas.style.display = "block";
   startScreen.style.display = "none";
   animate();
-};
+}
 
 startBtn.addEventListener("click", startGame);
 
