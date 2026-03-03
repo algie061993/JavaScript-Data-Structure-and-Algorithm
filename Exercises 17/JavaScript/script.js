@@ -73,15 +73,33 @@ class Platform {
 
 const player = new Player();
 
-
 const platformPositions = [
-
+  { x: 500, y: proportionalSize(450) },
+  { x: 700, y: proportionalSize(400) },
+  { x: 850, y: proportionalSize(350) },
+  { x: 900, y: proportionalSize(350) },
+  { x: 1050, y: proportionalSize(150) },
+  { x: 2500, y: proportionalSize(450) },
+  { x: 2900, y: proportionalSize(400) },
+  { x: 3150, y: proportionalSize(350) },
+  { x: 3900, y: proportionalSize(450) },
+  { x: 4200, y: proportionalSize(400) },
+  { x: 4400, y: proportionalSize(200) },
+  { x: 4700, y: proportionalSize(150) },
 ];
 
+const platforms = platformPositions.map(
+  (platform) => new Platform(platform.x, platform.y)
+);
 
 const animate = () => {
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  platforms.forEach((platform) => {
+    platform.draw();
+  });
+
   player.update();
 
   if (keys.rightKey.pressed && player.position.x < proportionalSize(400)) {
@@ -90,7 +108,27 @@ const animate = () => {
     player.velocity.x = -5;
   } else {
     player.velocity.x = 0;
+
+    if (keys.rightKey.pressed && isCheckpointCollisionDetectionActive) {
+      platforms.forEach((platform) => {
+        platform.position.x -= 5;
+      });
+    } else if (keys.leftKey.pressed && isCheckpointCollisionDetectionActive) {
+      platforms.forEach((platform) => {
+        platform.position.x += 5;
+      });
+    }
   }
+
+
+  platforms.forEach((platform) => {
+    const collisionDetectionRules = [
+      player.position.y + player.height <= platform.position.y,
+      player.position.y + player.height + player.velocity.y >= platform.position.y,
+
+    ];
+  });
+
 }
 
 
